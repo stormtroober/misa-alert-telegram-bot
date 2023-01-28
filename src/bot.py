@@ -5,6 +5,8 @@ Simple bot to send message about levels of Misa river during the emergencies
 import DataRetriever as DataRetriever
 import ReservedSettings
 import logging
+import Settings
+from Resources import NoPrintCode
 
 from telegram import __version__ as TG_VER
 
@@ -42,9 +44,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def alarm(context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send the alarm message."""
-    job = context.job
-    data = DataRetriever.RetrieveStationData()
-    await context.bot.send_message(ReservedSettings.MyUserId, text=data)
+    #job = context.job
+    dataFilteredAndFormatted = DataRetriever.RetrieveStationData()
+    if dataFilteredAndFormatted != NoPrintCode:
+        await context.bot.send_message(ReservedSettings.MyUserId, text=dataFilteredAndFormatted)
+
 
 def main() -> None:
     """Run bot."""
@@ -55,7 +59,7 @@ def main() -> None:
     application.add_handler(CommandHandler(["start", "help"], start))
 
     job_queue = application.job_queue
-    job_minute = job_queue.run_repeating(alarm, interval=600, first=10)
+    job_minute = job_queue.run_repeating(alarm, interval=Settings.loop_time, first=1)
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
     

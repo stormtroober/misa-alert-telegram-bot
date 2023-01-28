@@ -1,7 +1,10 @@
 import requests
 import json
-import MessageFormatter
+import DataFilter
 import ReservedSettings
+import Resources
+import time
+from Resources import bettolelle, pianello, serra, burello, senigallia
 
 def RetrieveStationData():
     IsDebugOn = False
@@ -9,24 +12,38 @@ def RetrieveStationData():
     if(IsDebugOn):
         filtered_json = [{"codice":26,"nome":"Misa","localita":"Bettolelle ","comune":"Senigallia ","prov":"AN","latitudine":"43.66250","longitud":"13.16472","analog":[{"tipoSens":0,"descr":"Pioggia TOT Oggi ","valore":"28.6","trend":0,"unmis":"mm "},{"tipoSens":1,"descr":"Intensita di pioggia ","valore":"0.00","trend":0,"unmis":"mm/min "},{"tipoSens":5,"descr":"Temperatura aria ","valore":"6.7","trend":0,"unmis":"°C "},{"tipoSens":100,"descr":"Livello Misa ","valore":"3.68","trend":-0.02682800032198429,"unmis":"mt "},{"tipoSens":6,"descr":"Umidita relativa ","valore":"76","trend":0,"unmis":"% "}],"lastUpdateTime":"23/01/2023 12:45"}]
     else:
-        path = ReservedSettings.api_endpoint
-        x = requests.get(path)
+        status_code = 0
+        tries = 0
+        while status_code != 200:
+            path = ReservedSettings.api_endpoint
+            x = requests.get(path)
+            status_code = x.status_code
+            if(status_code != 200):
+                time.sleep(5)
+                print('Trying again...')
+            if(tries > 3):
+                print('Giving up after 3 tries')
+                break
+            tries += 1
         responseJson = json.loads(x.text)
 
         filtered_json = [
             dictionary for dictionary in responseJson
-            if dictionary['codice'] == 26 or dictionary['codice'] == 183
+            if dictionary['codice'] == bettolelle['code'] or dictionary['codice'] == pianello['code'] or dictionary['codice'] == serra['code'] 
+                or dictionary['codice'] == burello['code'] or dictionary['codice'] == senigallia['code']
         ]
     stationsData = []
     for station in filtered_json:
         lastUpdateTime = station['lastUpdateTime']
-        stationPlace = station['localita']
+        codice = station['codice']
+        stationPlace = station['localita'].strip()
         data = [
             dictionary for dictionary in station['analog']
             if dictionary['tipoSens'] == 100
         ]
         data = data[0]
-        trend = "Crescita" if data['trend'] > 0 else "Decrescita"
+        trend = Resources.increasing_chart_emoji if data['trend'] > 0 else Resources.decreasing_chart_emoji
         value = data['valore']
-        stationsData.append({'stationPlace': stationPlace, 'value': value, 'trend': trend, 'lastUpdateTime': lastUpdateTime})
-    return MessageFormatter.formatStationsMessage(stationsData)
+        stationsData.append({'code': codice, 'stationPlace': stationPlace, 'value': value, 'trend': trend, 'lastUpdateTime': lastUpdateTime})
+    return DataFilter.filter(stationsData)
+

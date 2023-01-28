@@ -1,0 +1,3 @@
+loop_time = 600
+#IF ONLY A STATION GETS OVER THE TRESHOLD I DISPLAY ALL DATA
+global_treshold_level = 1.30
