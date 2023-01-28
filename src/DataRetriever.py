@@ -46,11 +46,13 @@ def RetrieveStationData():
         stationsData.append({'code': codice, 'stationPlace': stationPlace, 'value': value, 'trend': trend, 'lastUpdateTime': lastUpdateTime})
     return DataFilter.filter(stationsData)
 
-
+# I have to thank Ricky for his intuition about this function 
 def FilterAllStations(dict):
-    codes = getStationCodes()
-    return pred(dict, codes[0]) or pred(dict, codes[1]) or pred(dict, codes[2]) or pred(dict, codes[3]) or pred(dict, codes[4])
+    testResultsList = []
+    for c in getStationCodes():
+        testResultsList.append(test(dict, c))
+    return any(testResultsList)
 
-def pred(dict, code):
+def test(dict, code):
     return dict['codice'] == code
 
