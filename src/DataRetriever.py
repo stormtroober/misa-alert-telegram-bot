@@ -4,7 +4,7 @@ import DataFilter
 import ReservedSettings
 import Resources
 import time
-from Resources import bettolelle, pianello, serra, burello, senigallia
+from Resources import getStationCodes
 
 def RetrieveStationData():
     IsDebugOn = False
@@ -29,8 +29,7 @@ def RetrieveStationData():
 
         filtered_json = [
             dictionary for dictionary in responseJson
-            if dictionary['codice'] == bettolelle['code'] or dictionary['codice'] == pianello['code'] or dictionary['codice'] == serra['code'] 
-                or dictionary['codice'] == burello['code'] or dictionary['codice'] == senigallia['code']
+            if FilterAllStations(dictionary)
         ]
     stationsData = []
     for station in filtered_json:
@@ -46,4 +45,12 @@ def RetrieveStationData():
         value = data['valore']
         stationsData.append({'code': codice, 'stationPlace': stationPlace, 'value': value, 'trend': trend, 'lastUpdateTime': lastUpdateTime})
     return DataFilter.filter(stationsData)
+
+
+def FilterAllStations(dict):
+    codes = getStationCodes()
+    return pred(dict, codes[0]) or pred(dict, codes[1]) or pred(dict, codes[2]) or pred(dict, codes[3]) or pred(dict, codes[4])
+
+def pred(dict, code):
+    return dict['codice'] == code
 
