@@ -46,7 +46,7 @@ def RetrieveStationData():
         stationsData.append({'code': codice, 'stationPlace': stationPlace, 'value': value, 'trend': trend, 'lastUpdateTime': lastUpdateTime})
     return DataFilter.filter(stationsData)
 
-# I have to thank Ricky for his intuition about this function 
+# I have to thank Ricky for his intuition about this function
 def FilterAllStations(dict):
     testResultsList = []
     for c in getStationCodes():

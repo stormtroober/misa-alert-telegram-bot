@@ -47,7 +47,9 @@ async def alarm(context: ContextTypes.DEFAULT_TYPE) -> None:
     #job = context.job
     dataFilteredAndFormatted = DataRetriever.RetrieveStationData()
     if dataFilteredAndFormatted != NoPrintCode:
-        await context.bot.send_message(ReservedSettings.MyUserId, text=dataFilteredAndFormatted)
+        await context.bot.send_message(ReservedSettings.TerraSATGroupId, 
+                                       message_thread_id=ReservedSettings.TerraSATTopicId, 
+                                       text=dataFilteredAndFormatted)
 
 
 def main() -> None:
