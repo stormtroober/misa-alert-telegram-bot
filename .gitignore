@@ -1,3 +1,6 @@
 __pycache__/
 env/
 src/ReservedSettings.py
+build/
+dist/
+bot.spec
