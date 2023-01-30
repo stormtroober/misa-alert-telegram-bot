@@ -1,4 +1,5 @@
 NoPrintCode = -47
+ErrorCode = -48
 increasing_chart_emoji = "\U0001F4C8"
 decreasing_chart_emoji = "\U0001F4C9"
 earth_emoji = "\U0001F30D"

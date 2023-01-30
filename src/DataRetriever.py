@@ -1,10 +1,15 @@
 import requests
 import json
-import DataFilter
+from DataFilter import DataFilter
 import ReservedSettings
 import Resources
 import time
-from Resources import getStationCodes
+from Resources import getStationCodes, ErrorCode
+
+dataFilter = DataFilter()
+
+def getDataFilter():
+    return dataFilter
 
 def RetrieveStationData():
     IsDebugOn = False
@@ -19,32 +24,35 @@ def RetrieveStationData():
             x = requests.get(path)
             status_code = x.status_code
             if(status_code != 200):
-                time.sleep(5)
+                time.sleep(2)
                 print('Trying again...')
             if(tries > 3):
                 print('Giving up after 3 tries')
                 break
             tries += 1
-        responseJson = json.loads(x.text)
-
-        filtered_json = [
-            dictionary for dictionary in responseJson
-            if FilterAllStations(dictionary)
-        ]
-    stationsData = []
-    for station in filtered_json:
-        lastUpdateTime = station['lastUpdateTime']
-        codice = station['codice']
-        stationPlace = station['localita'].strip()
-        data = [
-            dictionary for dictionary in station['analog']
-            if dictionary['tipoSens'] == 100
-        ]
-        data = data[0]
-        trend = Resources.increasing_chart_emoji if data['trend'] > 0 else Resources.decreasing_chart_emoji
-        value = data['valore']
-        stationsData.append({'code': codice, 'stationPlace': stationPlace, 'value': value, 'trend': trend, 'lastUpdateTime': lastUpdateTime})
-    return DataFilter.filter(stationsData)
+        if(status_code == 200):
+            responseJson = json.loads(x.text)
+            filtered_json = [
+                dictionary for dictionary in responseJson
+                if FilterAllStations(dictionary)
+            ]
+            stationsData = []
+            for station in filtered_json:
+                lastUpdateTime = station['lastUpdateTime']
+                codice = station['codice']
+                stationPlace = station['localita'].strip()
+                data = [
+                    dictionary for dictionary in station['analog']
+                    if dictionary['tipoSens'] == 100
+                ]
+                data = data[0]
+                trend = Resources.increasing_chart_emoji if data['trend'] > 0 else Resources.decreasing_chart_emoji
+                value = data['valore']
+                stationsData.append({'code': codice, 'stationPlace': stationPlace, 'value': value, 'trend': trend, 'lastUpdateTime': lastUpdateTime})
+            return dataFilter.filter(stationsData)
+        else:
+            return ErrorCode
+    
 
 # I have to thank Ricky for his intuition about this function
 def FilterAllStations(dict):
