@@ -1,0 +1,3 @@
+SELECT station, MAX(value), timestamp
+FROM MisaLevels
+GROUP BY station;

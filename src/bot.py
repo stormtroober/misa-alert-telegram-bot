@@ -68,7 +68,7 @@ async def alarm(context: ContextTypes.DEFAULT_TYPE) -> None:
     if(dataFilteredAndFormatted != ErrorCode):
         if dataFilteredAndFormatted != NoPrintCode:
             await context.bot.send_message(ReservedSettings.DefaultChatId, 
-                                        #    message_thread_id=ReservedSettings.DefaultTopicId, 
+                                            message_thread_id=ReservedSettings.DefaultTopicId, 
                                            text=dataFilteredAndFormatted)
     else:
         print('Cannot get Data from the host.')
