@@ -24,6 +24,7 @@ if __version_info__ < (20, 0, 0, "alpha", 1):
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes, JobQueue, MessageHandler, filters
 
+
 # Enable logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO

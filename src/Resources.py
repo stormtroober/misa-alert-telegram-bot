@@ -7,8 +7,8 @@ stations = [
     {'code': 3, 'displayName': 'Serra de Conti', 'visualOrder': 1},
     {'code': 183, 'displayName': 'Pianello', 'visualOrder': 2},
     {'code': 120, 'displayName': 'Burello (Nevola)', 'visualOrder': 3},
-    {'code': 26, 'displayName': 'Bettolelle', 'visualOrder': 4},
-    {'code': 185, 'displayName': 'Senigallia Ponte Garibaldi', 'visualOrder': 5}
+    {'code': 26, 'displayName': 'Bettolelle', 'visualOrder': 4}
+    # {'code': 185, 'displayName': 'Senigallia Ponte Garibaldi', 'visualOrder': 5}
 ]
 
 def getStationInfo(code):
