@@ -1,0 +1,112 @@
+pid 4852
+2023-03-01 21:56:47,085 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2023-03-01 21:56:47,498 - apscheduler.scheduler - INFO - Added job "alarm" to job store "default"
+2023-03-01 21:56:47,499 - apscheduler.scheduler - INFO - Scheduler started
+2023-03-01 21:56:47,499 - telegram.ext._application - INFO - Application started
+2023-03-01 21:56:47,963 - apscheduler.executors.default - INFO - Running job "alarm (trigger: interval[0:20:00], next run at: 2023-03-01 21:16:47 UTC)" (scheduled at 2023-03-01 20:56:47.961098+00:00)
+2023-03-01 21:56:49,474 - apscheduler.executors.default - INFO - Job "alarm (trigger: interval[0:20:00], next run at: 2023-03-01 21:16:47 UTC)" executed successfully
+
+2023-03-04 09:45:34,022 - telegram.ext._updater - ERROR - Error while getting Updates: httpx HTTPError: 
+2023-03-04 09:45:34,023 - telegram.ext._application - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/asyncio/selector_events.py", line 862, in _read_ready__data_received
+    data = self._sock.recv(self.max_size)
+ConnectionResetError: [Errno 104] Connection reset by peer
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpcore/_exceptions.py", line 10, in map_exceptions
+    yield
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpcore/backends/asyncio.py", line 34, in read
+    return await self._stream.receive(max_bytes=max_bytes)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/anyio/streams/tls.py", line 195, in receive
+    data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/anyio/streams/tls.py", line 137, in _call_sslobject_method
+    data = await self.transport_stream.receive()
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 1274, in receive
+    raise self._protocol.exception
+anyio.BrokenResourceError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpx/_transports/default.py", line 60, in map_httpcore_exceptions
+    yield
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpx/_transports/default.py", line 353, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpcore/_async/connection_pool.py", line 253, in handle_async_request
+    raise exc
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpcore/_async/connection_pool.py", line 237, in handle_async_request
+    response = await connection.handle_async_request(request)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpcore/_async/connection.py", line 90, in handle_async_request
+    return await self._connection.handle_async_request(request)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpcore/_async/http11.py", line 112, in handle_async_request
+    raise exc
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpcore/_async/http11.py", line 91, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpcore/_async/http11.py", line 155, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpcore/_async/http11.py", line 191, in _receive_event
+    data = await self._network_stream.read(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpcore/backends/asyncio.py", line 31, in read
+    with map_exceptions(exc_map):
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc)
+httpcore.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/request/_httpxrequest.py", line 183, in do_request
+    res = await self._client.request(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpx/_client.py", line 1533, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpx/_client.py", line 1620, in send
+    response = await self._send_handling_auth(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpx/_client.py", line 1648, in _send_handling_auth
+    response = await self._send_handling_redirects(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpx/_client.py", line 1685, in _send_handling_redirects
+    response = await self._send_single_request(request)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpx/_client.py", line 1722, in _send_single_request
+    response = await transport.handle_async_request(request)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpx/_transports/default.py", line 352, in handle_async_request
+    with map_httpcore_exceptions():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/httpx/_transports/default.py", line 77, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/ext/_updater.py", line 600, in _network_loop_retry
+    if not await action_cb():
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/ext/_updater.py", line 327, in polling_action_cb
+    raise exc
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/ext/_updater.py", line 312, in polling_action_cb
+    updates = await self.bot.get_updates(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/ext/_extbot.py", line 524, in get_updates
+    updates = await super().get_updates(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/_bot.py", line 334, in decorator
+    result = await func(*args, **kwargs)  # skipcq: PYL-E1102
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/_bot.py", line 3584, in get_updates
+    await self._post(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/_bot.py", line 422, in _post
+    return await self._do_post(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/ext/_extbot.py", line 306, in _do_post
+    return await super()._do_post(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/_bot.py", line 453, in _do_post
+    return await request.post(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/request/_baserequest.py", line 165, in post
+    result = await self._request_wrapper(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/request/_baserequest.py", line 288, in _request_wrapper
+    raise exc
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/request/_baserequest.py", line 274, in _request_wrapper
+    code, payload = await self.do_request(
+  File "/home/utente/Documenti/misa-alert-telegram-bot/env/lib/python3.10/site-packages/telegram/request/_httpxrequest.py", line 204, in do_request
+    raise NetworkError(f"httpx HTTPError: {err}") from err
+telegram.error.NetworkError: httpx HTTPError
