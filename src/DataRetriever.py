@@ -12,55 +12,34 @@ def getDataFilter():
     return dataFilter
 
 def RetrieveStationData():
-    IsDebugOn = False
-
-    if(IsDebugOn):
-        filtered_json = [{"codice":26,"nome":"Misa","localita":"Bettolelle ","comune":"Senigallia ","prov":"AN","latitudine":"43.66250","longitud":"13.16472","analog":[{"tipoSens":0,"descr":"Pioggia TOT Oggi ","valore":"28.6","trend":0,"unmis":"mm "},{"tipoSens":1,"descr":"Intensita di pioggia ","valore":"0.00","trend":0,"unmis":"mm/min "},{"tipoSens":5,"descr":"Temperatura aria ","valore":"6.7","trend":0,"unmis":"°C "},{"tipoSens":100,"descr":"Livello Misa ","valore":"3.68","trend":-0.02682800032198429,"unmis":"mt "},{"tipoSens":6,"descr":"Umidita relativa ","valore":"76","trend":0,"unmis":"% "}],"lastUpdateTime":"23/01/2023 12:45"}]
-    else:
-        status_code = 0
-        tries = 0
-        while status_code != 200:
-            path = ReservedSettings.api_endpoint
-            x = requests.get(path)
-            status_code = x.status_code
-            if(status_code != 200):
-                time.sleep(2)
-                print('Trying again...')
-            if(tries > 3):
-                print('Giving up after 3 tries')
-                break
-            tries += 1
-        if(status_code == 200):
-            responseJson = json.loads(x.text)
-            filtered_json = [
-                dictionary for dictionary in responseJson
-                if FilterAllStations(dictionary)
-            ]
-            stationsData = []
-            for station in filtered_json:
-                lastUpdateTime = station['lastUpdateTime']
-                codice = station['codice']
-                stationPlace = station['localita'].strip()
-                data = [
-                    dictionary for dictionary in station['analog']
-                    if dictionary['tipoSens'] == 100
-                ]
-                data = data[0]
-                trend = Resources.increasing_chart_emoji if data['trend'] > 0 else Resources.decreasing_chart_emoji
-                value = data['valore']
-                stationsData.append({'code': codice, 'stationPlace': stationPlace, 'value': value, 'trend': trend, 'lastUpdateTime': lastUpdateTime})
-            return dataFilter.filter(stationsData)
+    stationsData = []
+    for station in Resources.stations:
+        path = ReservedSettings.baseUrlForStations + str(station['code'])
+        try:
+            response = requests.get(path)
+        except ConnectionResetError as exc:
+            print('Oh no, connection error', str(exc))
+            # raise
         else:
-            return ErrorCode
-    
-
-# I have to thank Ricky for his intuition about this function
-def FilterAllStations(dict):
-    testResultsList = []
-    for c in getStationCodes():
-        testResultsList.append(test(dict, c))
-    return any(testResultsList)
-
-def test(dict, code):
-    return dict['codice'] == code
-
+            # print(station['code'], response.status_code)
+            if response.status_code == 200:
+                data = json.loads(response.text)
+                lastUpdateTime = data['lastUpdateTime']
+                codice = data['codice']
+                stationPlace = data['localita'].strip()
+                sensorFiltered = []
+                for sensor in data['analog']:
+                    if(sensor['TIPOSENS'] == 100 or sensor['TIPOSENS'] == 101):
+                        sensorFiltered.append(sensor)
+                if station['code'] == 185:
+                    #stazione ponte garibaldi ha il nuovo sensore radar
+                    sensor = sensorFiltered[1]
+                else:
+                    sensor = sensorFiltered[0]
+                trend = Resources.increasing_chart_emoji if sensor['TREND'] > 0 else Resources.decreasing_chart_emoji
+                value = sensor['VALORE']
+                stationsData.append({'code': codice, 'stationPlace': stationPlace, 'value': value, 'trend': trend, 'lastUpdateTime': lastUpdateTime})
+    if(len(stationsData) > 0):
+        return dataFilter.filter(stationsData)
+    else:
+        return ErrorCode

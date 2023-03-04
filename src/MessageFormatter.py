@@ -10,7 +10,7 @@ def formatStationsMessage(stationsData):
         for stationData in stationsData:
             stationInfo = getStationInfo(stationData['code'])
             stationDicts.append({'visualOrder': stationInfo['visualOrder'],
-                                 'msg': Resources.earth_emoji + ' ' + stationInfo['displayName'] + "\n" + stationData['trend'] + ' ' + stationData['value'] + ' metri' + "\n" + "Aggiornato al " + stationData['lastUpdateTime']})
+                                 'msg': Resources.earth_emoji + ' ' + stationInfo['displayName'] + "\n" + stationData['trend'] + ' ' + str(round(stationData['value'], 2)) + ' metri' + "\n" + "Aggiornato al " + stationData['lastUpdateTime']})
     
         fullMsg = composeFullMessage(stationDicts)
         return fullMsg

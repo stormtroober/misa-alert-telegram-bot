@@ -1,6 +1,6 @@
 
 """
-Simple bot to send message about levels of Misa river during the emergencies
+Bot to send message about levels of Misa river during the emergencies
 """
 import DataRetriever as DataRetriever
 import ReservedSettings
