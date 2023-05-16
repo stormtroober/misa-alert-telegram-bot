@@ -16,12 +16,12 @@ def RetrieveStationData():
     for station in Resources.stations:
         path = ReservedSettings.baseUrlForStations + str(station['code'])
         try:
-            response = requests.get(path)
+            response = requests.get(path, timeout=10)
         except ConnectionResetError as exc:
             print('Oh no, connection error', str(exc))
             # raise
         else:
-            # print(station['code'], response.status_code)
+            print(station['code'], response.status_code)
             if response.status_code == 200:
                 data = json.loads(response.text)
                 lastUpdateTime = data['lastUpdateTime']

@@ -82,7 +82,7 @@ def main() -> None:
     # on different commands - answer in Telegram
     application.add_handler(CommandHandler(["setSogliaAllarme"], tresholdChange))
     echo_handler = MessageHandler(filters.TEXT, ping)
-    application.add_handler(echo_handler)
+    #application.add_handler(echo_handler)
 
     keyboard = [[InlineKeyboardButton("Option 1", callback_data='1'),
              InlineKeyboardButton("Option 2", callback_data='2')]]
