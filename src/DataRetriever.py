@@ -16,10 +16,11 @@ def RetrieveStationData():
     for station in Resources.stations:
         path = ReservedSettings.baseUrlForStations + str(station['code'])
         try:
+            response = requests.get(path, timeout=10, headers={'Connection':'close'})
+        except Exception as exc:
+            print(exc)
+            time.sleep(5)
             response = requests.get(path, timeout=10)
-        except ConnectionResetError as exc:
-            print('Oh no, connection error', str(exc))
-            # raise
         else:
             print(station['code'], response.status_code)
             if response.status_code == 200:
